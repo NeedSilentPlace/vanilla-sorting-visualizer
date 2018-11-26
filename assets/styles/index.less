@@ -3,8 +3,114 @@
 // http://www.paulirish.com/2012/box-sizing-border-box-ftw/
 html, body {
     box-sizing: border-box;
-    background-color: pink;
+    background-color: white;
+    text-align: center;
+    width: 100%
 }
 *, *:before, *:after {
     box-sizing: inherit;
+}
+::placeholder {
+  color: #000000;
+  opacity: 1;
+}
+#container {
+  background: #f9d70b;
+  border: 5px solid black;
+  border-radius: 5px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+#title {
+  background: #000000;
+  color: #ffffff;
+  border-radius: 5px;
+  margin: 15px;
+}
+h1 {
+  padding: 5px;
+}
+#input {
+  margin: 15px;
+  padding-top: 10px;
+}
+#box {
+  width: 200px;
+  height: 35px;
+  border: 5px solid black;
+  border-radius: 6px;
+  padding-left: 10px;
+  font-size: 15px;
+  letter-spacing: 1px;
+}
+#type {
+  margin: 30px;
+}
+#run {
+  margin: 15px;
+}
+#bubble, #insertion, #merge, #selection, #clear {
+  width: 85px;
+  border: 2px solid black;
+  border-radius: 5px;
+  display: inline-block;
+  padding: 3px 7px;
+  margin: 5px;
+  cursor: pointer;
+  transition: 0.5s;
+}
+#bubble:hover, #insertion:hover, #merge:hover, #selection:hover {
+  background: black;
+  color: white;
+}
+#clear:hover {
+  background: white;
+}
+#show {
+  margin-top: 15px;
+  margin-bottom: 25px;
+}
+#hoisting {
+  padding: 15px;
+}
+#btn {
+  display: inline-block;
+  background: #f20505;
+  width: 80px;
+  border: 2px solid black;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+span {
+  margin: 15px;
+  padding: 5px 10px;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+.numbers {
+  display: inline-block;
+  padding: 5px 10px;
+  margin: 5px;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+.sorted {
+  background: black;
+  color: white;
+  transition: 0.5s;
+}
+.red {
+  background: #f20505;
+  transition: 0.5s;
+}
+.white {
+  background: white;
+  transition: 0.5s;
+}
+.merged {
+  margin: 0px;
+  transition: 0.5s;
 }
