@@ -108,7 +108,7 @@ function clickInsertion() {
     typeList[i].classList.remove('sorted');
   }
   for(var j = 0; j < inputValues.length; j++) {
-    inputValues[i].classList.remove('merged');
+    inputValues[j].classList.remove('merged');
   }
 
   document.getElementById('insertion').classList.add('sorted');
