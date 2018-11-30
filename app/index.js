@@ -22,10 +22,17 @@ inputBox.addEventListener('keydown', function(ev) {
   }
 });
 
-document.getElementById('bubble').addEventListener('click', clickBubble);
-document.getElementById('insertion').addEventListener('click', clickInsertion);
-document.getElementById('selection').addEventListener('click', clickSelection);
-document.getElementById('merge').addEventListener('click', clickMerge);
+var clear = document.querySelector('.clear');
+
+clear.addEventListener('click', function() {
+  var list = document.getElementById('show');
+  list.removeChild(list.childNodes[list.children.length]);
+});
+
+document.querySelector('.bubble').addEventListener('click', clickBubble);
+document.querySelector('.insertion').addEventListener('click', clickInsertion);
+document.querySelector('.selection').addEventListener('click', clickSelection);
+document.querySelector('.merge').addEventListener('click', clickMerge);
 
 function clickBubble() {
   var typeList = document.getElementById('type').children;
@@ -38,7 +45,7 @@ function clickBubble() {
     inputValues[j].classList.remove('merged');
   }
 
-  document.getElementById('bubble').classList.add('sorted');
+  document.querySelector('.bubble').classList.add('sorted');
   document.getElementById('btn').removeEventListener('click', sortByInsertion);
   document.getElementById('btn').removeEventListener('click', sortBySelection);
   document.getElementById('btn').removeEventListener('click', sortByMerge);
@@ -58,10 +65,10 @@ function sortByBubble() {
   var time = 0
   for(var i = inputValues.length - 1; i >= 0; i--) {
     for(var j = 0; j < i; j++) {
-      changeBubbleColor(j, time);
+      swapBubble(j, time);
       time++;
     }
-    changeSortedColor(i, time);
+    fixedVisualizer(i, time);
   }
 
   setTimeout(function() {
@@ -69,7 +76,7 @@ function sortByBubble() {
   }, 1000 * time);
 }
 
-function changeBubbleColor(index, delay) {
+function swapBubble(index, delay) {
   var inputValues = document.getElementById('show').children;
 
   setTimeout(function() {
@@ -88,7 +95,7 @@ function changeBubbleColor(index, delay) {
   }, 1000 * delay);
 }
 
-function changeSortedColor(index, delay) {
+function fixedVisualizer(index, delay) {
   var inputValues = document.getElementById('show').children;
 
   setTimeout(function() {
@@ -111,7 +118,7 @@ function clickInsertion() {
     inputValues[j].classList.remove('merged');
   }
 
-  document.getElementById('insertion').classList.add('sorted');
+  document.querySelector('.insertion').classList.add('sorted');
   document.getElementById('btn').removeEventListener('click', sortByBubble);
   document.getElementById('btn').removeEventListener('click', sortBySelection);
   document.getElementById('btn').removeEventListener('click', sortByMerge);
@@ -141,14 +148,14 @@ function sortByInsertion() {
     for(var k = j - 1; k >= 0; k--) {
       if(numbers[k] > tmp) {
         numbers[k + 1] = numbers[k];
-        changeInsertionPlace(k, time);
+        swapInsertion(k, time);
         time++;
       } else {
         break;
       }
     }
     numbers[k + 1] = tmp;
-    changeInsertionPlace(k + 1, time, tmp);
+    swapInsertion(k + 1, time, tmp);
     time++;
   }
 
@@ -170,7 +177,7 @@ function insertStandard(value, index, delay) {
   }, 1000 * delay);
 }
 
-function changeInsertionPlace(sorted, delay, standardValue) {
+function swapInsertion(sorted, delay, standardValue) {
   var inputValues = document.getElementById('show').children;
   var standard = document.getElementById('standard');
 
@@ -198,7 +205,7 @@ function clickSelection() {
     inputValues[j].classList.remove('merged');
   }
 
-  document.getElementById('selection').classList.add('sorted');
+  document.querySelector('.selection').classList.add('sorted');
   document.getElementById('btn').removeEventListener('click', sortByBubble);
   document.getElementById('btn').removeEventListener('click', sortByInsertion);
   document.getElementById('btn').removeEventListener('click', sortByMerge);
@@ -232,14 +239,14 @@ function sortBySelection() {
         insertMinimum(k, time);
         time++;
       } else {
-        changeSelectionColor(k, time);
+        swapSelectionVisualizer(k, time);
         time++;
       }
     }
     numbers[turnPoint] = numbers[j];
     numbers[j] = min;
-    changePlace(j, time);
-    changeSortedColor(j, time);
+    swapSelection(j, time);
+    fixedVisualizer(j, time);
     time++;
   }
 
@@ -251,7 +258,7 @@ function sortBySelection() {
   }, 1000 * time);
 }
 
-function changePlace(index, delay) {
+function swapSelection(index, delay) {
   var inputValues = document.getElementById('show').children;
 
   setTimeout(function() {
@@ -280,7 +287,7 @@ function insertMinimum(index, delay) {
   }, 1000 * delay);
 }
 
-function changeSelectionColor(index, delay) {
+function swapSelectionVisualizer(index, delay) {
   var inputValues = document.getElementById('show').children;
 
   setTimeout(function() {
@@ -303,7 +310,7 @@ function clickMerge() {
     typeList[j].classList.remove('sorted');
   }
 
-  document.getElementById('merge').classList.add('sorted');
+  document.querySelector('.merge').classList.add('sorted');
   document.getElementById('btn').removeEventListener('click', sortByInsertion);
   document.getElementById('btn').removeEventListener('click', sortBySelection);
   document.getElementById('btn').removeEventListener('click', sortByBubble);
@@ -325,33 +332,33 @@ function sortByMerge() {
     return alert('too much numbers! (max 10)');
   }
 
-  var storage = [];
-  var colorStorage = [];
+  var swapHistory = [];
+  var colorIndex = [];
 
-  function split(arr) {
+  function split(arr, startIndex) {
     if(arr.length === 1) {
       return arr;
     }
 
-    var center = Math.round(arr.length/2);
-    var left = arr.slice(0, center);
-    var right = arr.slice(center);
+    var mid = Math.round(arr.length / 2);
+    var left = arr.slice(0, mid);
+    var right = arr.slice(mid);
+    var index = startIndex;
 
-    return merge(split(left), split(right));
+    return swapMergedData(split(left, index), split(right, index + mid), index, index + arr.length - 1);
   }
 
-  function merge(left, right) {
+  function swapMergedData(left, right, from, to) { 
     var sorted = [];
-    var clone = [];
-    var colorIndex = [];
-
+    var clone = numbers.slice(0);
+    
     while(left.length && right.length) {
-      if(left[0] <= right[0]) {
-        sorted.push(left[0]);
-        left.splice(0, 1);
-      } else {
+      if(left[0] > right[0]) {
         sorted.push(right[0]);
         right.splice(0, 1);
+      } else {
+        sorted.push(left[0]);
+        left.splice(0, 1);
       }
     }
 
@@ -366,79 +373,67 @@ function sortByMerge() {
       }
     }
 
-    var firstIndex = numbers.indexOf(sorted[0]);
-    var lastIndex = numbers.indexOf(sorted[0]);
-
-    for(var k = 0; k < sorted.length; k++) {
-      if(numbers.indexOf(sorted[k]) < firstIndex) {
-        firstIndex = numbers.indexOf(sorted[k]);
-      }
-      if(numbers.indexOf(sorted[k]) > lastIndex) {
-        lastIndex = numbers.indexOf(sorted[k]);
-      }
+    for(var k = from; k <= to; k++) {
+      clone[k] = sorted[k - from];
+      numbers[k] = sorted[k -from];
     }
-    colorIndex = [firstIndex, lastIndex];
-    colorStorage.push(colorIndex);
-
-    for(var k = 0; k < sorted.length; k++) {
-        numbers.splice(firstIndex, 1);
-    }
-    for(var l = sorted.length - 1; l >= 0; l--) {
-      numbers.splice(firstIndex, 0, sorted[l]);
-    }
-    clone = numbers.slice(0);
-    storage.push(clone);
-    return sorted;
+    swapHistory.push(clone);
+    colorIndex.push([from, to]);
+    
+    return sorted
   }
+  split(numbers, 0);
 
-  split(numbers);
-  var time = 1;
-
+  var time = 0;
   setTimeout(function() {
-    for(var m = 0; m < inputValues.length; m++) {
-      inputValues[m].classList.remove('merged');
+    for(var i = 0; i < inputValues.length; i++) {
+      inputValues[i].classList.add('rewind');
     }
   }, 1000 * time);
   time++;
 
-  for(var n = 0; n < storage.length; n++) {
-    changeMergeColor(storage[n], colorStorage[n][0], colorStorage[n][1] + 1, time);
+  for(var i = 0; i < swapHistory.length; i++) {
+    swapData(swapHistory[i], time);
+    swapVisualizer(colorIndex[i], time);
     time++;
   }
 
   setTimeout(function() {
-    document.getElementById('standard').textContent = 'Complete!';
     for(var i = 0; i < inputValues.length; i++) {
-      inputValues[i].classList.remove('red');
+      inputValues[i].classList.remove('white');
       inputValues[i].classList.add('sorted');
     }
+    document.getElementById('standard').textContent = 'Complete!';
   }, 1000 * time);
 }
 
-function changeMergeColor(storageNum, colorStart, colorFinish, delay) {
+function swapData(data, delay) {
   var inputValues = document.getElementById('show').children;
 
   setTimeout(function() {
     for(var i = 0; i < inputValues.length; i++) {
-      inputValues[i].classList.remove('red');
-      inputValues[i].classList.remove('merged');
-    }
-    for(var j = colorStart; j < colorFinish; j++) {
-      inputValues[j].classList.add('red');
-      inputValues[j].classList.add('merged');
-    }
-    for(var k = 0; k < storageNum.length; k++) {
-      inputValues[k].textContent = storageNum[k];
+      inputValues[i].textContent = data[i];
     }
   }, 1000 * delay);
 }
 
-var clear = document.getElementById('clear');
+function swapVisualizer(data, delay) {
+  var inputValues = document.getElementById('show').children;
 
-clear.addEventListener('click', function() {
-  var list = document.getElementById('show');
-  list.removeChild(list.childNodes[list.children.length]);
-});
+  setTimeout(function() {
+    for(var i = 0; i < inputValues.length; i++) {
+      if(i >= data[0] && i <= data[1]) {
+        inputValues[i].classList.remove('rewind');
+        inputValues[i].classList.add('merged');
+        inputValues[i].classList.add('white');
+      } else {
+        inputValues[i].classList.remove('merged');
+        inputValues[i].classList.remove('white');
+        inputValues[i].classList.add('rewind');
+      }
+    }
+  }, 1000 * delay);
+}
 // ================================
 // START YOUR APP HERE
 // ================================

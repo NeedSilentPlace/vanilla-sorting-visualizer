@@ -14,27 +14,14 @@ html, body {
   color: #000000;
   opacity: 1;
 }
-#container {
-  background: #f9d70b;
-  border: 5px solid black;
-  border-radius: 5px;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-#title {
-  background: #000000;
-  color: #ffffff;
-  border-radius: 5px;
-  margin: 15px;
-}
 h1 {
   padding: 5px;
 }
-#input {
+span {
   margin: 15px;
-  padding-top: 10px;
+  padding: 5px 10px;
+  border: 1px solid black;
+  border-radius: 5px;
 }
 #box {
   width: 200px;
@@ -48,32 +35,9 @@ h1 {
 #type {
   margin: 30px;
 }
-#run {
-  margin: 15px;
-}
-#bubble, #insertion, #merge, #selection, #clear {
-  width: 85px;
-  border: 2px solid black;
-  border-radius: 5px;
-  display: inline-block;
-  padding: 3px 7px;
-  margin: 5px;
-  cursor: pointer;
-  transition: 0.5s;
-}
-#bubble:hover, #insertion:hover, #merge:hover, #selection:hover {
-  background: black;
-  color: white;
-}
-#clear:hover {
-  background: white;
-}
 #show {
   margin-top: 15px;
   margin-bottom: 25px;
-}
-#hoisting {
-  padding: 15px;
 }
 #btn {
   display: inline-block;
@@ -84,11 +48,57 @@ h1 {
   border-radius: 5px;
   cursor: pointer;
 }
-span {
-  margin: 15px;
-  padding: 5px 10px;
-  border: 1px solid black;
+.container {
+  background: #f9d70b;
+  border: 5px solid black;
   border-radius: 5px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.title {
+  background: #000000;
+  color: #ffffff;
+  border-radius: 5px;
+  margin: 15px;
+}
+.input {
+  margin: 15px;
+  padding-top: 10px;
+}
+.run {
+  margin: 15px;
+}
+.bubble, .insertion, .merge, .selection {
+  width: 85px;
+  border: 2px solid black;
+  border-radius: 5px;
+  display: inline-block;
+  padding: 3px 7px;
+  margin: 5px;
+  cursor: pointer;
+  transition: 0.5s;
+  &:hover {
+    background: black;
+    color: white;
+  }
+}
+.clear {
+  width: 85px;
+  border: 2px solid black;
+  border-radius: 5px;
+  display: inline-block;
+  padding: 3px 7px;
+  margin: 5px;
+  cursor: pointer;
+  transition: 0.5s;
+  &:hover {
+    background: white;
+  }
+}
+.hoisting {
+  padding: 15px;
 }
 .numbers {
   display: inline-block;
@@ -112,5 +122,9 @@ span {
 }
 .merged {
   margin: 0px;
+  transition: 0.5s;
+}
+.rewind {
+  margin: 15px;
   transition: 0.5s;
 }
