@@ -345,10 +345,10 @@ function sortByMerge() {
     var right = arr.slice(mid);
     var index = startIndex;
 
-    return swapMergedData(split(left, index), split(right, index + mid), index, index + arr.length - 1);
+    return recordMergedData(split(left, index), split(right, index + mid), index, index + arr.length - 1);
   }
 
-  function swapMergedData(left, right, from, to) { 
+  function recordMergedData(left, right, from, to) { 
     var sorted = [];
     var clone = numbers.slice(0);
     
